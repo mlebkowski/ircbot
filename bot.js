@@ -24,6 +24,13 @@ var replies = [
 		}
 	},
 	{
+		"re": /who are you|hello/,
+		"nick": true, 
+		"callback": function (from, to, message) {
+			this.say(to, "Hello. I’m a bot. My guts can be seen here: https://github.com/mlebkowski/ircbot");
+		}
+	},
+	{
 		"re": /^czy ?znany( ?lekarz)? ?dzia.a/i,
 		"nick": false,
 		"callback": function (from, to, message) {
