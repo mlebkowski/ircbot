@@ -3,12 +3,12 @@
 var irc = require('irc');
 var http = require('http');
 
-var opts = {
+var myHost, opts = {
     userName: 'docplanner',
     realName: 'Doctor Planner',
     autoRejoin: false,
-    channels: ['#docplanner'],        
-}
+    channels: ['#docplanner'],
+};
 
 var replies = [
 	{
@@ -64,6 +64,16 @@ var flood = false, server = http.createServer(function (request, response) {
     	response.end("");
     });
 }).listen(2080);
+
+client.addListener('join#docplanner', function (nick, details) {
+	if (nick == this.opt.nick) {
+		myHost = details.host;
+		console.log("I now know my hostname: " + myHost);
+	} else if (myHost && myHost == details.host) {
+		console.log("I know this guy, we live together: " + nick);
+		this.send('MODE', '#docplanner', '+o', nick);
+	}
+});
 
 client.addListener('message', function (from, to, message) {
 	var myNick = this.opt.nick.toLowerCase(), isNick, command;
